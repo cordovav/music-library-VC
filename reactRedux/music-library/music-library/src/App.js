@@ -1,7 +1,8 @@
-import './App.css';
 import Gallery from './Components/Gallery';
 import SearchBar from './Components/SearchBar';
 import { useEffect, useState } from 'react'
+import { DataContext } from './Content/DataContext';
+//import './App.css'
 
 function App() {
   let [data, setData] = useState([]);
@@ -13,6 +14,7 @@ function App() {
   useEffect(()=>{
     if(search) {
       const fetchData = async () => {
+        document.title = `${search} Music`
       const response = await fetch(API_URL + search)
       const resData = await response.json();
         if (resData.results.length > 0) {
@@ -35,7 +37,7 @@ function App() {
       <SearchBar handleSearch = {handleSearch} />
       {message}
       <DataContext.Provider value = {data}>
-      <Gallery />
+        <Gallery />
       </DataContext.Provider>
     </div>
   );
