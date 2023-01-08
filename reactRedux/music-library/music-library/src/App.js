@@ -36,7 +36,7 @@ function App() {
   }
 
   return (
-    <div>      
+    <div className='App'>      
       {message}
       <Router>
         <Routes>
