@@ -1,11 +1,11 @@
 //these compnents will be making seperate API calls from the app
 // component to serve specific data about a given album
-
+import Spinner from '../Spinner'
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 function AlbumView() {
-    const navigate = useNavigate()
+    const history = useHistory()
     const { id } = useParams()
     const [ albumData, setAlbumData ] = useState([])
 
@@ -19,12 +19,10 @@ function AlbumView() {
         fetchData()
     },[id])
 
-    const justSongs = albumData.filter(entry => entry.wrapperType === 'track')
-
-    const renderSongs = justSongs.map((song, i) => {
+    const allSongs = albumData.filter(entity => entity.kind === 'song').map((album, i ) => {
         return (
             <div key={i}>
-                <p>{song.trackName}</p>
+                <p>{album.trackName}</p>
             </div>
         )
     })
@@ -32,17 +30,18 @@ function AlbumView() {
     const navButtons = () => {
         return (
             <div>
-                <button onClick={()=> navigate(-1)}>Back</button>
+                <button onClick={()=> {history.push('/')}}>Home</button>
                 |
-                <button onClick={()=> navigate('/')}>Home</button>
+                <button onClick={()=> {history.goBack()}}>Back</button>
             </div>
         )
     }
 
     return (
         <div>
+            {albumData.length > 0 ? <h2>{albumData[0].collectionName}</h2> : <Spinner />}
             {navButtons()}
-            {renderSongs}
+            {allSongs}
         </div>
     )
 }
